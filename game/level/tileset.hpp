@@ -6,29 +6,36 @@
 #include <SFML/Graphics.hpp>
 
 
-typedef struct Tile {
-    sf::Vertex * vertex;
-    bool block;
-} Tile;
+const int WALL_RIGHT = 0;
+const int WALL_CORNER_BOTTOM_LEFT = 1;
+const int WALL_LEFT = 2;
+const int WALL_CORNER_TOP_RIGHT = 3;
+const int WALL_TOP = 4;
+const int WALL_CORNER_TOP_LEFT = 5;
+const int WALL_CORNER_BOTTOM_RIGHT = 6;
+const int WALL_BOTTOM = 7;
+const int FLOOR_SHADOW = 8;
+const int FLOOR_DEFAULT = 9;
+const int FLOOR_WALL_DOWN = 10;
+const int ROOF_WALL_DOWN = 11;
+
+typedef sf::Vertex Tile[4];
 
 
 class Tileset
 {
 
     public :
-        Tileset( void );
+        Tileset( const std::string path = "" );
         ~Tileset( void );
 
         bool load( const std::string path );
 
         /// Getters :
-        const sf::Texture * getTexture( void ) const;
-        const sf::Vertex * getVertex( unsigned int id ) const;
         std::string getName( void ) const;
         std::string getNameTexture( void ) const;
+        const sf::Texture * getTexture( void ) const;
         const Tile * getTile( unsigned int id ) const;
-
-        bool isBlocking( unsigned int id ) const;
 
         const static unsigned int SizeTile = 32;
 

@@ -1,7 +1,11 @@
 #ifndef _LEVEL_GENERATION_H_
 #define _LEVEL_GENERATION_H_
 
-Level * generateLevel( Tileset * tileset, unsigned int width, unsigned int height );
+#include <string>
+
+class Level;
+
+Level * generateLevel( const std::string pathTileset, unsigned int width, unsigned int height );
 
 
 #endif // _LEVEL_GENERATION_H_

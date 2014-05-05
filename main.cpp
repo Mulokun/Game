@@ -18,7 +18,8 @@ int main(int argc, char ** argv)
 
 /** TODO LIST :
 
-    - Revoir tileset.hpp/cpp
+    - save/load level
+
     - add GUI
     - Commenter
     - Constructor improve (init variable, copie)

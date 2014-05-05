@@ -6,7 +6,7 @@
 #include "tileset.hpp"
 
 
-Level::Level( void ) : m_tileset(NULL), m_name(""), m_path(""), m_width(0), m_height(0), m_background_grid(NULL), m_background_vertices(NULL)
+Level::Level( void ) : m_tileset(NULL), m_name(""), m_path(""), m_width(0), m_height(0), m_background_grid(NULL)
 {
 
 }
@@ -58,12 +58,10 @@ bool Level::load( const std::string path )
         m_background_grid = NULL;
     }
 
-    m_background_grid = new unsigned int[m_width * m_height];
-    for(unsigned int w = 0; w < m_width; w++)
-    {
-        for(unsigned int h = 0; h < m_height; h++)
-        {
-            m_background_grid[w + h * m_width] = 33;
+    m_background_grid = new bool[m_width * m_height];
+    for(unsigned int w = 0; w < m_width; w++) {
+        for(unsigned int h = 0; h < m_height; h++) {
+            m_background_grid[w + h * m_width] = WALL;
         }
     }
 
@@ -79,10 +77,16 @@ bool Level::load( const std::string path )
     while( k < m_width * m_height && !file.eof() )
     {
         file >> t;
-        unsigned int n = t - 33;
-        setTile( n, k % m_width, k / m_width );
+        if(t == 'O') {
+            setFloor( k % m_width, k / m_width );
+        } else {
+            setWall( k % m_width, k / m_width );
+        }
+
         k++;
     }
+
+    update();
 
     return true;
 }
@@ -91,7 +95,7 @@ bool Level::save( const std::string path )
 {
     if(m_path != path)
     {
-        m_path = path;
+        m_path.assign(path);
     }
 
     std::ofstream file;
@@ -109,11 +113,19 @@ bool Level::save( const std::string path )
     {
         for(unsigned int x(0); x < m_width; x++)
         {
-            file << static_cast<char>(33 + m_background_grid[x + y * m_width]);
+            file << (isWall(x, y) ? 'X' : 'O');
         }
     }
 
     return true;
+}
+
+void Level::init( bool * grid, const unsigned int width, const unsigned int height )
+{
+    m_width = width;
+    m_height = height;
+    m_background_grid = grid;
+    update();
 }
 
 void Level::setName( const std::string name )
@@ -128,43 +140,29 @@ bool Level::setTileset( const std::string path )
     return m_tileset->load(path);
 }
 
-void Level::setTile( const unsigned int tile_id, const unsigned int x, const unsigned int y )
+void Level::setWall( const unsigned int x, const unsigned int y )
 {
-    m_background_grid[x + y * m_width] = tile_id;
-
-    sf::Vertex * v = m_tileset->getVertex( tile_id );
-    sf::Vertex * quad = & m_background_vertices[ ((y * m_width) + x) * 4];
-
-    if( !v || !quad )
-    {
-        std::cerr << "Error : Set Tile - Vertex NULL " << std::endl;
-    }
-    else
-    {
-        quad[0].position.x = x * 32 + v[0].position.x;
-        quad[0].position.y = y * 32 + v[0].position.y;
-        quad[1].position.x = x * 32 + v[1].position.x;
-        quad[1].position.y = y * 32 + v[1].position.y;
-        quad[2].position.x = x * 32 + v[2].position.x;
-        quad[2].position.y = y * 32 + v[2].position.y;
-        quad[3].position.x = x * 32 + v[3].position.x;
-        quad[3].position.y = y * 32 + v[3].position.y;
-
-        quad[0].texCoords = v[0].texCoords;
-        quad[1].texCoords = v[1].texCoords;
-        quad[2].texCoords = v[2].texCoords;
-        quad[3].texCoords = v[3].texCoords;
+    if(isBounded(x, y)) {
+        m_background_grid[x + y * m_width] = WALL;
     }
 }
 
-bool Level::isBlocking( int x, int y ) const
+void Level::setFloor( const unsigned int x, const unsigned int y )
 {
-    return m_tileset->isBlocking( x + y * m_width );
+    if(isBounded(x, y)) {
+        m_background_grid[x + y * m_width] = FLOOR;
+    }
 }
 
-Tile * Level::getTile( int x, int y ) const
+bool Level::isWall( int x, int y ) const
 {
-    return m_tileset->getTile(m_background_grid[x + y * m_width]);
+    if(!isBounded(x, y)) { return true; }
+    else { return m_background_grid[x + y * m_width]; }
+}
+
+bool Level::isBounded( int x, int y ) const
+{
+    return x + y * m_width >= 0 && x + y * m_width < m_width * m_height;
 }
 
 sf::Vector2i Level::getSize( void ) const
@@ -178,28 +176,56 @@ void Level::update( void )
     {
         for (unsigned int j = 0; j < m_height; ++j)
         {
-            sf::Vertex * v = m_tileset->getVertex( m_background_grid[i + j * m_width] );
+            const Tile * v = NULL;
             sf::Vertex * quad = & m_background_vertices[ ((j * m_width) + i) * 4];
 
-            if(v == NULL || quad == NULL)
-            {
-
+            bool currentCase = isWall(i, j);
+            if(currentCase) { // Si c'est un sol
+                if(isWall(i, (j+1))) { // Si la case du dessous est un mur
+                    v = m_tileset->getTile(FLOOR_WALL_DOWN);
+                } else if(isWall((i-1), j) || isWall(i, (j-1))) { // Si la case du dessus ou à gauche est un mur
+                    v = m_tileset->getTile(FLOOR_SHADOW);
+                } else {
+                    v = m_tileset->getTile(FLOOR_DEFAULT);
+                }
+            } else { // Si c'est un mur
+                if(isWall(i, (j+1))) { // Si la case du dessous est un sol
+                    v = m_tileset->getTile(WALL_BOTTOM);
+                    if(isWall((i-1), j)) { // Si la case à gauche est aussi un sol
+                        v = m_tileset->getTile(WALL_CORNER_BOTTOM_RIGHT);
+                    } else if(isWall((i+1), j)) { // Si la case à droite est aussi un sol
+                        v = m_tileset->getTile(WALL_CORNER_BOTTOM_LEFT);
+                    }
+                } else if(isWall(i, (j+2))) { // Si 2 case en dessous est un sol
+                    v = m_tileset->getTile(WALL_TOP);
+                    if(isWall((i-1), j)) { // Si la case à gauche est aussi un sol
+                        v = m_tileset->getTile(WALL_CORNER_TOP_RIGHT);
+                    } else if(isWall((i+1), j)) { // Si la case à droite est aussi un sol
+                        v = m_tileset->getTile(WALL_CORNER_TOP_LEFT);
+                    }
+                } else if(isWall((i+1), j)) { // Si la case a droite est un sol
+                    v = m_tileset->getTile(WALL_LEFT);
+                } else if(isWall((i-1), j)) { // Si 2 case en dessous est un sol
+                    v = m_tileset->getTile(WALL_RIGHT);
+                } // Sinon c'est un mur entoure de rien, donc aucun tile
             }
-            else
-            {
-                quad[0].position.x = i * 32 + v[0].position.x;
-                quad[0].position.y = j * 32 + v[0].position.y;
-                quad[1].position.x = i * 32 + v[1].position.x;
-                quad[1].position.y = j * 32 + v[1].position.y;
-                quad[2].position.x = i * 32 + v[2].position.x;
-                quad[2].position.y = j * 32 + v[2].position.y;
-                quad[3].position.x = i * 32 + v[3].position.x;
-                quad[3].position.y = j * 32 + v[3].position.y;
 
-                quad[0].texCoords = v[0].texCoords;
-                quad[1].texCoords = v[1].texCoords;
-                quad[2].texCoords = v[2].texCoords;
-                quad[3].texCoords = v[3].texCoords;
+
+            if( v && quad )
+            {
+                quad[0].position.x = i * 32 + v[0]->position.x;
+                quad[0].position.y = j * 32 + v[0]->position.y;
+                quad[1].position.x = i * 32 + v[1]->position.x;
+                quad[1].position.y = j * 32 + v[1]->position.y;
+                quad[2].position.x = i * 32 + v[2]->position.x;
+                quad[2].position.y = j * 32 + v[2]->position.y;
+                quad[3].position.x = i * 32 + v[3]->position.x;
+                quad[3].position.y = j * 32 + v[3]->position.y;
+
+                quad[0].texCoords = v[0]->texCoords;
+                quad[1].texCoords = v[1]->texCoords;
+                quad[2].texCoords = v[2]->texCoords;
+                quad[3].texCoords = v[3]->texCoords;
             }
         }
     }

@@ -9,6 +9,10 @@
 #include "tileset.hpp"
 
 
+#define WALL  true
+#define FLOOR false
+
+
 class Level
 {
 
@@ -17,15 +21,16 @@ class Level
         ~Level( void );
 
         bool load( const std::string path );
-        bool save( const std::string path ) const;
+        bool save( const std::string path );
         void init( bool * grid, const unsigned int width, const unsigned int height );
 
         void setName( const std::string name );
         bool setTileset( const std::string path );
-        void setTile( const unsigned int tile_id, const unsigned int x, const unsigned int y );
+        void setWall( const unsigned int x, const unsigned int y );
+        void setFloor( const unsigned int x, const unsigned int y );
+        bool isWall( int x, int y ) const;
+        bool isBounded( int x, int y ) const;
 
-        bool isBlocking( int x, int y ) const;
-        Tile * getTile( int x, int y ) const;
         sf::Vector2i getSize( void ) const;
 
         void update( void ); // Init. les VertexArray en fonction des grilles
@@ -39,7 +44,7 @@ class Level
         unsigned int m_width;
         unsigned int m_height;
 
-        unsigned int * m_background_grid; // Floor + Wall
+        bool * m_background_grid; // Floor + Wall
         sf::VertexArray m_background_vertices; // Floor + Wall
 
         /// LATER :
