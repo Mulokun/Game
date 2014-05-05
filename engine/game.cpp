@@ -8,13 +8,13 @@ Game::~Game( void ) {}
 
 void Game::init( void )
 {
-    m_render.create(sf::VideoMode(240, 160), "Game", sf::Style::Titlebar | sf::Style::Close);
+    m_render.create(sf::VideoMode(800, 600), "Game", sf::Style::Titlebar | sf::Style::Close);
     m_render.setFramerateLimit(60);
     m_render.setKeyRepeatEnabled(false);
 
-    m_zoom = 3;
+    m_zoom = 1;
 
-    m_render.setSize( sf::Vector2u( 240 * m_zoom, 160 * m_zoom ) );
+    m_render.setSize( sf::Vector2u( 800 * m_zoom, 600 * m_zoom ) );
 
     StateManager::kill();
 }
@@ -46,7 +46,7 @@ void Game::update( void )
 
 void Game::draw( void )
 {
-    m_render.clear( sf::Color::White );
+    m_render.clear( sf::Color::Black );
     StateManager::draw( m_render );
     m_render.display();
 }

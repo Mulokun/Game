@@ -9,6 +9,7 @@
 #include "../engine/animation.hpp"
 
 #include "../game/entity/entity.hpp"
+#include "../game/level/level.hpp"
 
 
 class TestState : public State
@@ -25,9 +26,7 @@ class TestState : public State
 
     private :
 
-        Entity m_hero1;
-        Entity m_hero2;
-        bool m_bHero2_following;
+        Level m_level;
 };
 
 #endif // _TEST_STATE_

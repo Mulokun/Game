@@ -18,7 +18,8 @@ int main(int argc, char ** argv)
 
 /** TODO LIST :
 
-    - save/load level
+    - save a tester
+    - tester lvl avec un perso
 
     - add GUI
     - Commenter

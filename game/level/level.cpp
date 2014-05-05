@@ -52,6 +52,9 @@ bool Level::load( const std::string path )
     m_background_vertices.setPrimitiveType(sf::Quads);
     m_background_vertices.resize(m_width * m_height * 4);
 
+    m_roof_vertices.setPrimitiveType(sf::Quads);
+    m_roof_vertices.resize(m_width * m_height * 4);
+
     if(!m_background_grid)
     {
         delete m_background_grid;
@@ -177,37 +180,44 @@ void Level::update( void )
         for (unsigned int j = 0; j < m_height; ++j)
         {
             const Tile * v = NULL;
+            const Tile * r = NULL;
             sf::Vertex * quad = & m_background_vertices[ ((j * m_width) + i) * 4];
 
-            bool currentCase = isWall(i, j);
-            if(currentCase) { // Si c'est un sol
-                if(isWall(i, (j+1))) { // Si la case du dessous est un mur
-                    v = m_tileset->getTile(FLOOR_WALL_DOWN);
-                } else if(isWall((i-1), j) || isWall(i, (j-1))) { // Si la case du dessus ou à gauche est un mur
+            if(!isWall(i, j)) { // Si c'est un sol
+                if(isWall(i, j+1)) {
+                    r = m_tileset->getTile(ROOF_WALL);
+                }
+                if(isWall((i-1), j) || isWall(i, (j-1)) || isWall(i-1, (j-1)) ) { // Si la case du dessus ou à gauche est un mur
                     v = m_tileset->getTile(FLOOR_SHADOW);
                 } else {
                     v = m_tileset->getTile(FLOOR_DEFAULT);
                 }
             } else { // Si c'est un mur
-                if(isWall(i, (j+1))) { // Si la case du dessous est un sol
+                if(!isWall(i, (j+1))) { // Si la case du dessous est un sol
                     v = m_tileset->getTile(WALL_BOTTOM);
-                    if(isWall((i-1), j)) { // Si la case à gauche est aussi un sol
+                    if(!isWall((i-1), j)) { // Si la case à gauche est aussi un sol
                         v = m_tileset->getTile(WALL_CORNER_BOTTOM_RIGHT);
-                    } else if(isWall((i+1), j)) { // Si la case à droite est aussi un sol
+                    } else if(!isWall((i+1), j)) { // Si la case à droite est aussi un sol
                         v = m_tileset->getTile(WALL_CORNER_BOTTOM_LEFT);
                     }
-                } else if(isWall(i, (j+2))) { // Si 2 case en dessous est un sol
+                } else if(!isWall(i, (j+2))) { // Si 2 case en dessous est un sol
                     v = m_tileset->getTile(WALL_TOP);
-                    if(isWall((i-1), j)) { // Si la case à gauche est aussi un sol
+                    if(!isWall((i-1), j)) { // Si la case à gauche est aussi un sol
                         v = m_tileset->getTile(WALL_CORNER_TOP_RIGHT);
-                    } else if(isWall((i+1), j)) { // Si la case à droite est aussi un sol
+                    } else if(!isWall((i+1), j)) { // Si la case à droite est aussi un sol
                         v = m_tileset->getTile(WALL_CORNER_TOP_LEFT);
                     }
-                } else if(isWall((i+1), j)) { // Si la case a droite est un sol
+                } else if(!isWall((i+1), j) || !isWall((i+1), j+1)) { // Si la case a droite est un sol
                     v = m_tileset->getTile(WALL_LEFT);
-                } else if(isWall((i-1), j)) { // Si 2 case en dessous est un sol
+                } else if(!isWall((i-1), j) || !isWall((i-1), j+1)) { // Si la case a gauche est un sol
                     v = m_tileset->getTile(WALL_RIGHT);
-                } // Sinon c'est un mur entoure de rien, donc aucun tile
+                } else if(!isWall((i+1), j+2)) {
+                    v = m_tileset->getTile(WALL_TINY_CORNER_LEFT);
+                } else if(!isWall((i-1), j+2)) {
+                    v = m_tileset->getTile(WALL_TINY_CORNER_RIGHT);
+                }
+
+                // Sinon c'est un mur entoure de rien, donc aucun tile
             }
 
 
@@ -227,6 +237,26 @@ void Level::update( void )
                 quad[2].texCoords = v[2]->texCoords;
                 quad[3].texCoords = v[3]->texCoords;
             }
+
+            if(r) {
+                sf::Vertex * quad = & m_roof_vertices[ ((j * m_width) + i) * 4];
+
+                if(quad) {
+                    quad[0].position.x = i * 32 + r[0]->position.x;
+                    quad[0].position.y = j * 32 + r[0]->position.y;
+                    quad[1].position.x = i * 32 + r[1]->position.x;
+                    quad[1].position.y = j * 32 + r[1]->position.y;
+                    quad[2].position.x = i * 32 + r[2]->position.x;
+                    quad[2].position.y = j * 32 + r[2]->position.y;
+                    quad[3].position.x = i * 32 + r[3]->position.x;
+                    quad[3].position.y = j * 32 + r[3]->position.y;
+
+                    quad[0].texCoords = r[0]->texCoords;
+                    quad[1].texCoords = r[1]->texCoords;
+                    quad[2].texCoords = r[2]->texCoords;
+                    quad[3].texCoords = r[3]->texCoords;
+                }
+            }
         }
     }
 }
@@ -244,6 +274,22 @@ void Level::draw( sf::RenderTarget& target, sf::Vector2i scroll ) const
     }
 
     target.draw(m_background_vertices, states);
+}
+
+
+void Level::drawRoof( sf::RenderTarget& target, sf::Vector2i scroll ) const
+{
+    scroll.x *= 32;
+    scroll.y *= 32;
+    sf::RenderStates states;
+    states.transform.translate( scroll.x, scroll.y );
+
+    if( m_tileset && m_tileset->getTexture() )
+    {
+        states.texture = m_tileset->getTexture();
+    }
+
+    target.draw(m_roof_vertices, states);
 }
 
 

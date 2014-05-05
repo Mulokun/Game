@@ -17,7 +17,10 @@ const int WALL_BOTTOM = 7;
 const int FLOOR_SHADOW = 8;
 const int FLOOR_DEFAULT = 9;
 const int FLOOR_WALL_DOWN = 10;
-const int ROOF_WALL_DOWN = 11;
+const int ROOF_WALL = 11;
+const int WALL_TINY_CORNER_LEFT = 12;
+const int WALL_TINY_CORNER_RIGHT = 13;
+const int DEFAULT_WALL = 14;
 
 typedef sf::Vertex Tile[4];
 
@@ -43,7 +46,7 @@ class Tileset
         std::string m_name;
         std::string m_nameTexture;
         sf::Texture * m_texture;
-        Tile * m_tiles;
+        Tile * m_tiles[15];
 
 };
 

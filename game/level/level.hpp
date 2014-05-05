@@ -34,7 +34,8 @@ class Level
         sf::Vector2i getSize( void ) const;
 
         void update( void ); // Init. les VertexArray en fonction des grilles
-        void draw( sf::RenderTarget& target, sf::Vector2i scroll ) const;
+        void draw( sf::RenderTarget& target, sf::Vector2i scroll = sf::Vector2i(0, 0) ) const;
+        void drawRoof( sf::RenderTarget& target, sf::Vector2i scroll = sf::Vector2i(0, 0) ) const;
 
     private :
         Tileset * m_tileset;
@@ -46,6 +47,7 @@ class Level
 
         bool * m_background_grid; // Floor + Wall
         sf::VertexArray m_background_vertices; // Floor + Wall
+        sf::VertexArray m_roof_vertices; // Roof
 
         /// LATER :
         //unsigned int * m_decoration_grid;
