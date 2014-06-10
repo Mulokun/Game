@@ -6,21 +6,20 @@
 #include <SFML/Graphics.hpp>
 
 
-const int WALL_RIGHT = 0;
-const int WALL_CORNER_BOTTOM_LEFT = 1;
-const int WALL_LEFT = 2;
-const int WALL_CORNER_TOP_RIGHT = 3;
-const int WALL_TOP = 4;
-const int WALL_CORNER_TOP_LEFT = 5;
-const int WALL_CORNER_BOTTOM_RIGHT = 6;
-const int WALL_BOTTOM = 7;
-const int FLOOR_SHADOW = 8;
-const int FLOOR_DEFAULT = 9;
-const int FLOOR_WALL_DOWN = 10;
-const int ROOF_WALL = 11;
-const int WALL_TINY_CORNER_LEFT = 12;
-const int WALL_TINY_CORNER_RIGHT = 13;
-const int DEFAULT_WALL = 14;
+const int WALL_R = 0;
+const int WALL_L = 1;
+const int WALL_T = 2;
+const int ROOF_TR = 3;
+const int ROOF_TL = 4;
+const int ROOF_D = 5;
+const int ROOF_DR = 6;
+const int ROOF_DL = 7;
+const int ROOF_U = 8;
+const int ROOF_UR = 9;
+const int ROOF_UL = 10;
+const int FLOOR_DEFAULT = 11;
+const int FLOOR_SHADOW = 12;
+#define NB_TILE 13
 
 typedef sf::Vertex Tile[4];
 
@@ -46,7 +45,7 @@ class Tileset
         std::string m_name;
         std::string m_nameTexture;
         sf::Texture * m_texture;
-        Tile * m_tiles[15];
+        Tile * m_tiles[NB_TILE];
 
 };
 

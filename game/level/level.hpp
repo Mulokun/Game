@@ -47,7 +47,7 @@ class Level
 
         bool * m_background_grid; // Floor + Wall
         sf::VertexArray m_background_vertices; // Floor + Wall
-        sf::VertexArray m_roof_vertices; // Roof
+        sf::RenderTexture m_roof_texture; // Roof
 
         /// LATER :
         //unsigned int * m_decoration_grid;
