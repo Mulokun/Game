@@ -43,14 +43,19 @@ sf::Vector2f direction( sf::Vector2f vFrom, sf::Vector2f vTo )
 
 
 
-float distance( sf::Vector2f p1, sf::Vector2f p2 )
+float distanceEuclidienne( sf::Vector2f p1, sf::Vector2f p2 )
 {
     return sqrt((p1.x - p2.x)*(p1.x - p2.x) + (p1.y - p2.y)*(p1.y - p2.y));
 }
 
-float distance( sf::Vector2i p1, sf::Vector2i p2 )
+float distanceEuclidienne( sf::Vector2i p1, sf::Vector2i p2 )
 {
     return sqrt((p1.x - p2.x)*(p1.x - p2.x) + (p1.y - p2.y)*(p1.y - p2.y));
+}
+
+unsigned int distanceManhattan( sf::Vector2i p1, sf::Vector2i p2 )
+{
+    return std::abs(p1.x - p2.x) + std::abs(p1.y - p2.y);
 }
 
 

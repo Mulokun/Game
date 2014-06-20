@@ -6,20 +6,21 @@
 #include <SFML/Graphics.hpp>
 
 
-const int WALL_R = 0;
-const int WALL_L = 1;
-const int WALL_T = 2;
-const int ROOF_TR = 3;
-const int ROOF_TL = 4;
-const int ROOF_D = 5;
-const int ROOF_DR = 6;
-const int ROOF_DL = 7;
-const int ROOF_U = 8;
-const int ROOF_UR = 9;
-const int ROOF_UL = 10;
-const int FLOOR_DEFAULT = 11;
-const int FLOOR_SHADOW = 12;
-#define NB_TILE 13
+const unsigned int WALL_R = 0;
+const unsigned int WALL_L = 1;
+const unsigned int WALL_U = 2;
+const unsigned int WALL_D = 3;
+const unsigned int WALL_UR1 = 4;
+const unsigned int WALL_UL1 = 5;
+const unsigned int WALL_DR1 = 6;
+const unsigned int WALL_DL1 = 7;
+const unsigned int WALL_UR2 = 8;
+const unsigned int WALL_UL2 = 9;
+const unsigned int WALL_DR2 = 10;
+const unsigned int WALL_DL2 = 11;
+const unsigned int FLOOR_DEFAULT = 12;
+const unsigned int FLOOR_SHADOW = 13;
+#define NB_TILE 14
 
 typedef sf::Vertex Tile[4];
 

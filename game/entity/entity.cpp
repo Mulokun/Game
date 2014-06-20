@@ -6,10 +6,10 @@
 #include "../../engine/time.hpp"
 #include "../../engine/foo.hpp"
 
-Entity::Entity( void ) : m_animation(NULL)
+Entity::Entity( void )
 {
-    m_speed = 3;
-    m_position = sf::Vector2f( 60, 60 );
+    m_position = sf::Vector2i( 0, 0 );
+    m_mobility = 5;
 }
 
 Entity::~Entity( void ) {}
@@ -19,43 +19,56 @@ void Entity::addAnimation( AnimationType type, std::string animationFile )
     m_animationSet[type] = new Animation(animationFile);
 }
 
-void Entity::setAnimation( AnimationType type )
+Animation * Entity::getAnimation( AnimationType type )
 {
     std::map< AnimationType, Animation * >::iterator it = m_animationSet.find(type);
     if( it != m_animationSet.end() ) {
-        m_animation = it->second;
+        return it->second;
     } else {
-        m_animation = NULL;
+        return NULL;
     }
 }
 
-sf::Vector2f Entity::getPosition( void ) const
+
+sf::Vector2i Entity::getPosition( void ) const
 {
     return m_position;
 }
 
-void Entity::move( sf::Vector2f direction )
+void Entity::setPosition( sf::Vector2i position )
 {
-    direction = normalize( direction );
-    if( fabs(direction.x) != fabs(direction.y) ) {
-        if( fabs(direction.x) > fabs(direction.y) ) {
-            setAnimation( direction.x > 0 ? RIGHT : LEFT );
-        } else {
-            setAnimation( direction.y > 0 ? DOWN : UP );
-        }
-    } else if ( direction.x == 0 ) {
-        setAnimation( STAY );
-    }
-
-    m_position.x += direction.x * m_speed * 32 * ( Time::deltaTime() / 1000 );
-    m_position.y += direction.y * m_speed * 32 * ( Time::deltaTime() / 1000 );
+    m_position = position;
 }
 
-void Entity::draw( sf::RenderTarget & target )
+void Entity::setPosition( int x, int y )
 {
-    if( m_animation ) {
-        sf::Sprite * s = m_animation->update();
-        s->setPosition( m_position );
-        target.draw( *s );
+    setPosition( sf::Vector2i(x, y) );
+}
+
+unsigned int Entity::getMobility( void ) const
+{
+    return m_mobility;
+}
+
+
+void Entity::setTimeElapsed( unsigned int time )
+{
+    m_timeElapsed += time;
+
+    while( m_timeElapsed > Entity::WaitingTime ) {
+        m_timeElapsed -= Entity::WaitingTime;
+        if(m_AP < Entity::MaxAP) {
+            m_AP++;
+        }
     }
+}
+
+unsigned int Entity::getTimeRemaining( void ) const
+{
+    return Entity::WaitingTime - m_timeElapsed;
+}
+
+unsigned int Entity::getAP( void ) const
+{
+    return m_AP;
 }

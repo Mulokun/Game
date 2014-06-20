@@ -1,12 +1,12 @@
-#include "game.hpp"
+#include "application.hpp"
 
 #include "state.hpp"
 #include "time.hpp"
 
-Game::Game( void ) { init(); }
-Game::~Game( void ) {}
+Application::Application( void ) { init(); }
+Application::~Application( void ) {}
 
-void Game::init( void )
+void Application::init( void )
 {
     m_render.create(sf::VideoMode(800, 600), "Game", sf::Style::Titlebar | sf::Style::Close);
     m_render.setFramerateLimit(60);
@@ -19,12 +19,12 @@ void Game::init( void )
     StateManager::kill();
 }
 
-void Game::addState( State * s )
+void Application::addState( State * s )
 {
     StateManager::addState(s);
 }
 
-void Game::start( void )
+void Application::start( void )
 {
     while (m_render.isOpen() && !StateManager::isEmpty())
     {
@@ -39,19 +39,19 @@ void Game::start( void )
 }
 
 
-void Game::update( void )
+void Application::update( void )
 {
     StateManager::update();
 }
 
-void Game::draw( void )
+void Application::draw( void )
 {
     m_render.clear( sf::Color::Black );
     StateManager::draw( m_render );
     m_render.display();
 }
 
-void Game::handleEvent( void )
+void Application::handleEvent( void )
 {
     sf::Event event;
 

@@ -24,8 +24,6 @@ bool Tileset::load( const std::string path )
     m_nameTexture = path;
     m_texture = DataManager::getTexture( path );
 
-/*
-
     Tile * t = new Tile[4];
     t[0]->position = sf::Vector2f(0, 0);
     t[1]->position = sf::Vector2f(SizeTile, 0);
@@ -36,7 +34,7 @@ bool Tileset::load( const std::string path )
     t[1]->texCoords = sf::Vector2f(pos.x * SizeTile + SizeTile, pos.y * SizeTile);
     t[2]->texCoords = sf::Vector2f(pos.x * SizeTile + SizeTile, pos.y * SizeTile + SizeTile);
     t[3]->texCoords = sf::Vector2f(pos.x * SizeTile, pos.y * SizeTile + SizeTile);
-    m_tiles[WALL_RIGHT] = t;
+    m_tiles[WALL_UL1] = t;
 
 
     t = new Tile[4];
@@ -49,21 +47,9 @@ bool Tileset::load( const std::string path )
     t[1]->texCoords = sf::Vector2f(pos.x * SizeTile + SizeTile, pos.y * SizeTile);
     t[2]->texCoords = sf::Vector2f(pos.x * SizeTile + SizeTile, pos.y * SizeTile + SizeTile);
     t[3]->texCoords = sf::Vector2f(pos.x * SizeTile, pos.y * SizeTile + SizeTile);
-    m_tiles[FLOOR_SHADOW] = t;
+    m_tiles[WALL_UR1] = t;
 
-    t = new Tile[4];
-    t[0]->position = sf::Vector2f(0, 0);
-    t[1]->position = sf::Vector2f(SizeTile, 0);
-    t[2]->position = sf::Vector2f(SizeTile, SizeTile);
-    t[3]->position = sf::Vector2f(0, SizeTile);
-    pos.x = 2; pos.y = 0;
-    t[0]->texCoords = sf::Vector2f(pos.x * SizeTile, pos.y * SizeTile);
-    t[1]->texCoords = sf::Vector2f(pos.x * SizeTile + SizeTile, pos.y * SizeTile);
-    t[2]->texCoords = sf::Vector2f(pos.x * SizeTile + SizeTile, pos.y * SizeTile + SizeTile);
-    t[3]->texCoords = sf::Vector2f(pos.x * SizeTile, pos.y * SizeTile + SizeTile);
-    m_tiles[WALL_LEFT] = t;
 
- /// //
     t = new Tile[4];
     t[0]->position = sf::Vector2f(0, 0);
     t[1]->position = sf::Vector2f(SizeTile, 0);
@@ -74,8 +60,7 @@ bool Tileset::load( const std::string path )
     t[1]->texCoords = sf::Vector2f(pos.x * SizeTile + SizeTile, pos.y * SizeTile);
     t[2]->texCoords = sf::Vector2f(pos.x * SizeTile + SizeTile, pos.y * SizeTile + SizeTile);
     t[3]->texCoords = sf::Vector2f(pos.x * SizeTile, pos.y * SizeTile + SizeTile);
-    m_tiles[WALL_CORNER_TOP_RIGHT] = t;
-
+    m_tiles[WALL_DL1] = t;
 
     t = new Tile[4];
     t[0]->position = sf::Vector2f(0, 0);
@@ -87,7 +72,34 @@ bool Tileset::load( const std::string path )
     t[1]->texCoords = sf::Vector2f(pos.x * SizeTile + SizeTile, pos.y * SizeTile);
     t[2]->texCoords = sf::Vector2f(pos.x * SizeTile + SizeTile, pos.y * SizeTile + SizeTile);
     t[3]->texCoords = sf::Vector2f(pos.x * SizeTile, pos.y * SizeTile + SizeTile);
-    m_tiles[WALL_TOP] = t;
+    m_tiles[WALL_DR1] = t;
+
+ /// //
+
+    t = new Tile[4];
+    t[0]->position = sf::Vector2f(0, 0);
+    t[1]->position = sf::Vector2f(SizeTile, 0);
+    t[2]->position = sf::Vector2f(SizeTile, SizeTile);
+    t[3]->position = sf::Vector2f(0, SizeTile);
+    pos.x = 2; pos.y = 0;
+    t[0]->texCoords = sf::Vector2f(pos.x * SizeTile, pos.y * SizeTile);
+    t[1]->texCoords = sf::Vector2f(pos.x * SizeTile + SizeTile, pos.y * SizeTile);
+    t[2]->texCoords = sf::Vector2f(pos.x * SizeTile + SizeTile, pos.y * SizeTile + SizeTile);
+    t[3]->texCoords = sf::Vector2f(pos.x * SizeTile, pos.y * SizeTile + SizeTile);
+    m_tiles[WALL_DR2] = t;
+
+
+    t = new Tile[4];
+    t[0]->position = sf::Vector2f(0, 0);
+    t[1]->position = sf::Vector2f(SizeTile, 0);
+    t[2]->position = sf::Vector2f(SizeTile, SizeTile);
+    t[3]->position = sf::Vector2f(0, SizeTile);
+    pos.x = 3; pos.y = 0;
+    t[0]->texCoords = sf::Vector2f(pos.x * SizeTile, pos.y * SizeTile);
+    t[1]->texCoords = sf::Vector2f(pos.x * SizeTile + SizeTile, pos.y * SizeTile);
+    t[2]->texCoords = sf::Vector2f(pos.x * SizeTile + SizeTile, pos.y * SizeTile + SizeTile);
+    t[3]->texCoords = sf::Vector2f(pos.x * SizeTile, pos.y * SizeTile + SizeTile);
+    m_tiles[WALL_DL2] = t;
 
 
     t = new Tile[4];
@@ -100,7 +112,19 @@ bool Tileset::load( const std::string path )
     t[1]->texCoords = sf::Vector2f(pos.x * SizeTile + SizeTile, pos.y * SizeTile);
     t[2]->texCoords = sf::Vector2f(pos.x * SizeTile + SizeTile, pos.y * SizeTile + SizeTile);
     t[3]->texCoords = sf::Vector2f(pos.x * SizeTile, pos.y * SizeTile + SizeTile);
-    m_tiles[WALL_CORNER_TOP_LEFT] = t;
+    m_tiles[WALL_UR2] = t;
+
+    t = new Tile[4];
+    t[0]->position = sf::Vector2f(0, 0);
+    t[1]->position = sf::Vector2f(SizeTile, 0);
+    t[2]->position = sf::Vector2f(SizeTile, SizeTile);
+    t[3]->position = sf::Vector2f(0, SizeTile);
+    pos.x = 3; pos.y = 1;
+    t[0]->texCoords = sf::Vector2f(pos.x * SizeTile, pos.y * SizeTile);
+    t[1]->texCoords = sf::Vector2f(pos.x * SizeTile + SizeTile, pos.y * SizeTile);
+    t[2]->texCoords = sf::Vector2f(pos.x * SizeTile + SizeTile, pos.y * SizeTile + SizeTile);
+    t[3]->texCoords = sf::Vector2f(pos.x * SizeTile, pos.y * SizeTile + SizeTile);
+    m_tiles[WALL_UL2] = t;
 
 /// //
 
@@ -114,7 +138,7 @@ bool Tileset::load( const std::string path )
     t[1]->texCoords = sf::Vector2f(pos.x * SizeTile + SizeTile, pos.y * SizeTile);
     t[2]->texCoords = sf::Vector2f(pos.x * SizeTile + SizeTile, pos.y * SizeTile + SizeTile);
     t[3]->texCoords = sf::Vector2f(pos.x * SizeTile, pos.y * SizeTile + SizeTile);
-    m_tiles[WALL_CORNER_BOTTOM_RIGHT] = t;
+    m_tiles[WALL_R] = t;
 
 
     t = new Tile[4];
@@ -123,220 +147,6 @@ bool Tileset::load( const std::string path )
     t[2]->position = sf::Vector2f(SizeTile, SizeTile);
     t[3]->position = sf::Vector2f(0, SizeTile);
     pos.x = 1; pos.y = 2;
-    t[0]->texCoords = sf::Vector2f(pos.x * SizeTile, pos.y * SizeTile);
-    t[1]->texCoords = sf::Vector2f(pos.x * SizeTile + SizeTile, pos.y * SizeTile);
-    t[2]->texCoords = sf::Vector2f(pos.x * SizeTile + SizeTile, pos.y * SizeTile + SizeTile);
-    t[3]->texCoords = sf::Vector2f(pos.x * SizeTile, pos.y * SizeTile + SizeTile);
-    m_tiles[WALL_BOTTOM] = t;
-
-
-    t = new Tile[4];
-    t[0]->position = sf::Vector2f(0, 0);
-    t[1]->position = sf::Vector2f(SizeTile, 0);
-    t[2]->position = sf::Vector2f(SizeTile, SizeTile);
-    t[3]->position = sf::Vector2f(0, SizeTile);
-    pos.x = 2; pos.y = 2;
-    t[0]->texCoords = sf::Vector2f(pos.x * SizeTile, pos.y * SizeTile);
-    t[1]->texCoords = sf::Vector2f(pos.x * SizeTile + SizeTile, pos.y * SizeTile);
-    t[2]->texCoords = sf::Vector2f(pos.x * SizeTile + SizeTile, pos.y * SizeTile + SizeTile);
-    t[3]->texCoords = sf::Vector2f(pos.x * SizeTile, pos.y * SizeTile + SizeTile);
-    m_tiles[WALL_CORNER_BOTTOM_LEFT] = t;
-
-/// //
-
-    t = new Tile[4];
-    t[0]->position = sf::Vector2f(0, 0);
-    t[1]->position = sf::Vector2f(SizeTile, 0);
-    t[2]->position = sf::Vector2f(SizeTile, SizeTile);
-    t[3]->position = sf::Vector2f(0, SizeTile);
-    pos.x = 0; pos.y = 3;
-    t[0]->texCoords = sf::Vector2f(pos.x * SizeTile, pos.y * SizeTile);
-    t[1]->texCoords = sf::Vector2f(pos.x * SizeTile + SizeTile, pos.y * SizeTile);
-    t[2]->texCoords = sf::Vector2f(pos.x * SizeTile + SizeTile, pos.y * SizeTile + SizeTile);
-    t[3]->texCoords = sf::Vector2f(pos.x * SizeTile, pos.y * SizeTile + SizeTile);
-    m_tiles[FLOOR_DEFAULT] = t;
-
-
-    t = new Tile[4];
-    t[0]->position = sf::Vector2f(0, 0);
-    t[1]->position = sf::Vector2f(SizeTile, 0);
-    t[2]->position = sf::Vector2f(SizeTile, SizeTile);
-    t[3]->position = sf::Vector2f(0, SizeTile);
-    pos.x = 1; pos.y = 3;
-    t[0]->texCoords = sf::Vector2f(pos.x * SizeTile, pos.y * SizeTile);
-    t[1]->texCoords = sf::Vector2f(pos.x * SizeTile + SizeTile, pos.y * SizeTile);
-    t[2]->texCoords = sf::Vector2f(pos.x * SizeTile + SizeTile, pos.y * SizeTile + SizeTile);
-    t[3]->texCoords = sf::Vector2f(pos.x * SizeTile, pos.y * SizeTile + SizeTile);
-    m_tiles[FLOOR_WALL_DOWN] = t;
-
-
-    t = new Tile[4];
-    t[0]->position = sf::Vector2f(0, 0);
-    t[1]->position = sf::Vector2f(SizeTile, 0);
-    t[2]->position = sf::Vector2f(SizeTile, SizeTile);
-    t[3]->position = sf::Vector2f(0, SizeTile);
-    pos.x = 2; pos.y = 3;
-    t[0]->texCoords = sf::Vector2f(pos.x * SizeTile, pos.y * SizeTile);
-    t[1]->texCoords = sf::Vector2f(pos.x * SizeTile + SizeTile, pos.y * SizeTile);
-    t[2]->texCoords = sf::Vector2f(pos.x * SizeTile + SizeTile, pos.y * SizeTile + SizeTile);
-    t[3]->texCoords = sf::Vector2f(pos.x * SizeTile, pos.y * SizeTile + SizeTile);
-    m_tiles[ROOF_WALL] = t;
-
-/// //
-
-    t = new Tile[4];
-    t[0]->position = sf::Vector2f(0, 0);
-    t[1]->position = sf::Vector2f(SizeTile, 0);
-    t[2]->position = sf::Vector2f(SizeTile, SizeTile);
-    t[3]->position = sf::Vector2f(0, SizeTile);
-    pos.x = 0; pos.y = 4;
-    t[0]->texCoords = sf::Vector2f(pos.x * SizeTile, pos.y * SizeTile);
-    t[1]->texCoords = sf::Vector2f(pos.x * SizeTile + SizeTile, pos.y * SizeTile);
-    t[2]->texCoords = sf::Vector2f(pos.x * SizeTile + SizeTile, pos.y * SizeTile + SizeTile);
-    t[3]->texCoords = sf::Vector2f(pos.x * SizeTile, pos.y * SizeTile + SizeTile);
-    m_tiles[WALL_TINY_CORNER_LEFT] = t;
-
-    t = new Tile[4];
-    t[0]->position = sf::Vector2f(0, 0);
-    t[1]->position = sf::Vector2f(SizeTile, 0);
-    t[2]->position = sf::Vector2f(SizeTile, SizeTile);
-    t[3]->position = sf::Vector2f(0, SizeTile);
-    pos.x = 1; pos.y = 4;
-    t[0]->texCoords = sf::Vector2f(pos.x * SizeTile, pos.y * SizeTile);
-    t[1]->texCoords = sf::Vector2f(pos.x * SizeTile + SizeTile, pos.y * SizeTile);
-    t[2]->texCoords = sf::Vector2f(pos.x * SizeTile + SizeTile, pos.y * SizeTile + SizeTile);
-    t[3]->texCoords = sf::Vector2f(pos.x * SizeTile, pos.y * SizeTile + SizeTile);
-    m_tiles[WALL_TINY_CORNER_RIGHT] = t;
-
-*/
-
-
-    Tile * t = new Tile[4];
-    t[0]->position = sf::Vector2f(0, 0);
-    t[1]->position = sf::Vector2f(SizeTile, 0);
-    t[2]->position = sf::Vector2f(SizeTile, SizeTile);
-    t[3]->position = sf::Vector2f(0, SizeTile);
-    sf::Vector2i pos(0, 0);
-    t[0]->texCoords = sf::Vector2f(pos.x * SizeTile, pos.y * SizeTile);
-    t[1]->texCoords = sf::Vector2f(pos.x * SizeTile + SizeTile, pos.y * SizeTile);
-    t[2]->texCoords = sf::Vector2f(pos.x * SizeTile + SizeTile, pos.y * SizeTile + SizeTile);
-    t[3]->texCoords = sf::Vector2f(pos.x * SizeTile, pos.y * SizeTile + SizeTile);
-    m_tiles[ROOF_UR] = t;
-
-
-    t = new Tile[4];
-    t[0]->position = sf::Vector2f(0, 0);
-    t[1]->position = sf::Vector2f(SizeTile, 0);
-    t[2]->position = sf::Vector2f(SizeTile, SizeTile);
-    t[3]->position = sf::Vector2f(0, SizeTile);
-    pos.x = 1; pos.y = 0;
-    t[0]->texCoords = sf::Vector2f(pos.x * SizeTile, pos.y * SizeTile);
-    t[1]->texCoords = sf::Vector2f(pos.x * SizeTile + SizeTile, pos.y * SizeTile);
-    t[2]->texCoords = sf::Vector2f(pos.x * SizeTile + SizeTile, pos.y * SizeTile + SizeTile);
-    t[3]->texCoords = sf::Vector2f(pos.x * SizeTile, pos.y * SizeTile + SizeTile);
-    m_tiles[ROOF_U] = t;
-
-
-    t = new Tile[4];
-    t[0]->position = sf::Vector2f(0, 0);
-    t[1]->position = sf::Vector2f(SizeTile, 0);
-    t[2]->position = sf::Vector2f(SizeTile, SizeTile);
-    t[3]->position = sf::Vector2f(0, SizeTile);
-    pos.x = 2; pos.y = 0;
-    t[0]->texCoords = sf::Vector2f(pos.x * SizeTile, pos.y * SizeTile);
-    t[1]->texCoords = sf::Vector2f(pos.x * SizeTile + SizeTile, pos.y * SizeTile);
-    t[2]->texCoords = sf::Vector2f(pos.x * SizeTile + SizeTile, pos.y * SizeTile + SizeTile);
-    t[3]->texCoords = sf::Vector2f(pos.x * SizeTile, pos.y * SizeTile + SizeTile);
-    m_tiles[ROOF_UL] = t;
-
- /// //
-
-    t = new Tile[4];
-    t[0]->position = sf::Vector2f(0, 0);
-    t[1]->position = sf::Vector2f(SizeTile, 0);
-    t[2]->position = sf::Vector2f(SizeTile, SizeTile);
-    t[3]->position = sf::Vector2f(0, SizeTile);
-    pos.x = 0; pos.y = 1;
-    t[0]->texCoords = sf::Vector2f(pos.x * SizeTile, pos.y * SizeTile);
-    t[1]->texCoords = sf::Vector2f(pos.x * SizeTile + SizeTile, pos.y * SizeTile);
-    t[2]->texCoords = sf::Vector2f(pos.x * SizeTile + SizeTile, pos.y * SizeTile + SizeTile);
-    t[3]->texCoords = sf::Vector2f(pos.x * SizeTile, pos.y * SizeTile + SizeTile);
-    m_tiles[ROOF_TR] = t;
-
-
-    t = new Tile[4];
-    t[0]->position = sf::Vector2f(0, 0);
-    t[1]->position = sf::Vector2f(SizeTile, 0);
-    t[2]->position = sf::Vector2f(SizeTile, SizeTile);
-    t[3]->position = sf::Vector2f(0, SizeTile);
-    pos.x = 1; pos.y = 1;
-    t[0]->texCoords = sf::Vector2f(pos.x * SizeTile, pos.y * SizeTile);
-    t[1]->texCoords = sf::Vector2f(pos.x * SizeTile + SizeTile, pos.y * SizeTile);
-    t[2]->texCoords = sf::Vector2f(pos.x * SizeTile + SizeTile, pos.y * SizeTile + SizeTile);
-    t[3]->texCoords = sf::Vector2f(pos.x * SizeTile, pos.y * SizeTile + SizeTile);
-    //m_tiles[] = t;
-
-
-    t = new Tile[4];
-    t[0]->position = sf::Vector2f(0, 0);
-    t[1]->position = sf::Vector2f(SizeTile, 0);
-    t[2]->position = sf::Vector2f(SizeTile, SizeTile);
-    t[3]->position = sf::Vector2f(0, SizeTile);
-    pos.x = 2; pos.y = 1;
-    t[0]->texCoords = sf::Vector2f(pos.x * SizeTile, pos.y * SizeTile);
-    t[1]->texCoords = sf::Vector2f(pos.x * SizeTile + SizeTile, pos.y * SizeTile);
-    t[2]->texCoords = sf::Vector2f(pos.x * SizeTile + SizeTile, pos.y * SizeTile + SizeTile);
-    t[3]->texCoords = sf::Vector2f(pos.x * SizeTile, pos.y * SizeTile + SizeTile);
-    m_tiles[ROOF_TL] = t;
-
-/// //
-
-    t = new Tile[4];
-    t[0]->position = sf::Vector2f(0, 0);
-    t[1]->position = sf::Vector2f(SizeTile, 0);
-    t[2]->position = sf::Vector2f(SizeTile, SizeTile);
-    t[3]->position = sf::Vector2f(0, SizeTile);
-    pos.x = 0; pos.y = 2;
-    t[0]->texCoords = sf::Vector2f(pos.x * SizeTile, pos.y * SizeTile);
-    t[1]->texCoords = sf::Vector2f(pos.x * SizeTile + SizeTile, pos.y * SizeTile);
-    t[2]->texCoords = sf::Vector2f(pos.x * SizeTile + SizeTile, pos.y * SizeTile + SizeTile);
-    t[3]->texCoords = sf::Vector2f(pos.x * SizeTile, pos.y * SizeTile + SizeTile);
-    m_tiles[ROOF_DR] = t;
-
-
-    t = new Tile[4];
-    t[0]->position = sf::Vector2f(0, 0);
-    t[1]->position = sf::Vector2f(SizeTile, 0);
-    t[2]->position = sf::Vector2f(SizeTile, SizeTile);
-    t[3]->position = sf::Vector2f(0, SizeTile);
-    pos.x = 1; pos.y = 2;
-    t[0]->texCoords = sf::Vector2f(pos.x * SizeTile, pos.y * SizeTile);
-    t[1]->texCoords = sf::Vector2f(pos.x * SizeTile + SizeTile, pos.y * SizeTile);
-    t[2]->texCoords = sf::Vector2f(pos.x * SizeTile + SizeTile, pos.y * SizeTile + SizeTile);
-    t[3]->texCoords = sf::Vector2f(pos.x * SizeTile, pos.y * SizeTile + SizeTile);
-    m_tiles[ROOF_D] = t;
-
-
-    t = new Tile[4];
-    t[0]->position = sf::Vector2f(0, 0);
-    t[1]->position = sf::Vector2f(SizeTile, 0);
-    t[2]->position = sf::Vector2f(SizeTile, SizeTile);
-    t[3]->position = sf::Vector2f(0, SizeTile);
-    pos.x = 2; pos.y = 2;
-    t[0]->texCoords = sf::Vector2f(pos.x * SizeTile, pos.y * SizeTile);
-    t[1]->texCoords = sf::Vector2f(pos.x * SizeTile + SizeTile, pos.y * SizeTile);
-    t[2]->texCoords = sf::Vector2f(pos.x * SizeTile + SizeTile, pos.y * SizeTile + SizeTile);
-    t[3]->texCoords = sf::Vector2f(pos.x * SizeTile, pos.y * SizeTile + SizeTile);
-    m_tiles[ROOF_DL] = t;
-
-/// //
-
-    t = new Tile[4];
-    t[0]->position = sf::Vector2f(0, 0);
-    t[1]->position = sf::Vector2f(SizeTile, 0);
-    t[2]->position = sf::Vector2f(SizeTile, SizeTile);
-    t[3]->position = sf::Vector2f(0, SizeTile);
-    pos.x = 0; pos.y = 3;
     t[0]->texCoords = sf::Vector2f(pos.x * SizeTile, pos.y * SizeTile);
     t[1]->texCoords = sf::Vector2f(pos.x * SizeTile + SizeTile, pos.y * SizeTile);
     t[2]->texCoords = sf::Vector2f(pos.x * SizeTile + SizeTile, pos.y * SizeTile + SizeTile);
@@ -349,12 +159,12 @@ bool Tileset::load( const std::string path )
     t[1]->position = sf::Vector2f(SizeTile, 0);
     t[2]->position = sf::Vector2f(SizeTile, SizeTile);
     t[3]->position = sf::Vector2f(0, SizeTile);
-    pos.x = 1; pos.y = 3;
+    pos.x = 2; pos.y = 2;
     t[0]->texCoords = sf::Vector2f(pos.x * SizeTile, pos.y * SizeTile);
     t[1]->texCoords = sf::Vector2f(pos.x * SizeTile + SizeTile, pos.y * SizeTile);
     t[2]->texCoords = sf::Vector2f(pos.x * SizeTile + SizeTile, pos.y * SizeTile + SizeTile);
     t[3]->texCoords = sf::Vector2f(pos.x * SizeTile, pos.y * SizeTile + SizeTile);
-    m_tiles[WALL_T] = t;
+    m_tiles[WALL_U] = t;
 
 
     t = new Tile[4];
@@ -362,12 +172,13 @@ bool Tileset::load( const std::string path )
     t[1]->position = sf::Vector2f(SizeTile, 0);
     t[2]->position = sf::Vector2f(SizeTile, SizeTile);
     t[3]->position = sf::Vector2f(0, SizeTile);
-    pos.x = 2; pos.y = 3;
+    pos.x = 3; pos.y = 2;
     t[0]->texCoords = sf::Vector2f(pos.x * SizeTile, pos.y * SizeTile);
     t[1]->texCoords = sf::Vector2f(pos.x * SizeTile + SizeTile, pos.y * SizeTile);
     t[2]->texCoords = sf::Vector2f(pos.x * SizeTile + SizeTile, pos.y * SizeTile + SizeTile);
     t[3]->texCoords = sf::Vector2f(pos.x * SizeTile, pos.y * SizeTile + SizeTile);
-    m_tiles[WALL_R] = t;
+    m_tiles[WALL_D] = t;
+
 
 /// //
 
@@ -376,24 +187,26 @@ bool Tileset::load( const std::string path )
     t[1]->position = sf::Vector2f(SizeTile, 0);
     t[2]->position = sf::Vector2f(SizeTile, SizeTile);
     t[3]->position = sf::Vector2f(0, SizeTile);
-    pos.x = 0; pos.y = 4;
+    pos.x = 4; pos.y = 0;
     t[0]->texCoords = sf::Vector2f(pos.x * SizeTile, pos.y * SizeTile);
     t[1]->texCoords = sf::Vector2f(pos.x * SizeTile + SizeTile, pos.y * SizeTile);
     t[2]->texCoords = sf::Vector2f(pos.x * SizeTile + SizeTile, pos.y * SizeTile + SizeTile);
     t[3]->texCoords = sf::Vector2f(pos.x * SizeTile, pos.y * SizeTile + SizeTile);
-    m_tiles[FLOOR_DEFAULT] = t;
+    m_tiles[FLOOR_SHADOW] = t;
+
 
     t = new Tile[4];
     t[0]->position = sf::Vector2f(0, 0);
     t[1]->position = sf::Vector2f(SizeTile, 0);
     t[2]->position = sf::Vector2f(SizeTile, SizeTile);
     t[3]->position = sf::Vector2f(0, SizeTile);
-    pos.x = 1; pos.y = 4;
+    pos.x = 4; pos.y = 1;
     t[0]->texCoords = sf::Vector2f(pos.x * SizeTile, pos.y * SizeTile);
     t[1]->texCoords = sf::Vector2f(pos.x * SizeTile + SizeTile, pos.y * SizeTile);
     t[2]->texCoords = sf::Vector2f(pos.x * SizeTile + SizeTile, pos.y * SizeTile + SizeTile);
     t[3]->texCoords = sf::Vector2f(pos.x * SizeTile, pos.y * SizeTile + SizeTile);
-    m_tiles[FLOOR_SHADOW] = t;
+    m_tiles[FLOOR_DEFAULT] = t;
+
 
     return true;
 }

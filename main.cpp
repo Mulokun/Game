@@ -2,16 +2,18 @@
 *** Un peu de texte à propos de ce projet :
 *** Réalisé par : CHAMBONNET Kevin
 ***  - Avril 2014 -
+***
+*** Derniere Modification : 20 Juin 2014
 **/
 
-#include "engine/game.hpp"
+#include "engine/application.hpp"
 #include "states/test_state.hpp"
 
 int main(int argc, char ** argv)
 {
-    Game game;
-    game.addState(new TestState());
-    game.start();
+    Application app;
+    app.addState(new TestState());
+    app.start();
 
     return 0;
 }
@@ -20,6 +22,8 @@ int main(int argc, char ** argv)
 
     - save a tester
     - tester lvl avec un perso
+
+    - entity.hpp : change enum -> const unsigned int
 
     - add GUI
     - Commenter

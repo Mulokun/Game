@@ -28,6 +28,7 @@ class Level
         bool setTileset( const std::string path );
         void setWall( const unsigned int x, const unsigned int y );
         void setFloor( const unsigned int x, const unsigned int y );
+        bool isWall( sf::Vector2i p ) const;
         bool isWall( int x, int y ) const;
         bool isBounded( int x, int y ) const;
 

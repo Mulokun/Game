@@ -27,20 +27,27 @@ class Entity
 
         //void initAnimtion( std::string animationsInitFile );
         void addAnimation( AnimationType type, std::string animationFile );
-        void setAnimation( AnimationType type );
+        Animation * getAnimation( AnimationType type );
 
-        sf::Vector2f getPosition( void ) const;
-        void move( sf::Vector2f direction );
+        sf::Vector2i getPosition( void ) const;
+        void setPosition( sf::Vector2i position );
+        void setPosition( int x, int y );
+        unsigned int getMobility( void ) const;
 
-        void draw( sf::RenderTarget & target );
+        void setTimeElapsed( unsigned int time );
+        unsigned int getTimeRemaining( void ) const;
+        unsigned int getAP( void ) const;
 
     private :
-        Animation * m_animation;
         std::map< AnimationType, Animation * > m_animationSet;
 
-        sf::Vector2f m_position;
-        float m_speed;
+        sf::Vector2i m_position;
+        unsigned int m_mobility;
 
+        static const unsigned int MaxAP = 4;
+        static const unsigned int WaitingTime = 100;
+        unsigned int m_AP;
+        unsigned int m_timeElapsed;
 };
 
 #endif // _ENTITY_

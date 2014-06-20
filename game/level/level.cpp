@@ -157,6 +157,11 @@ void Level::setFloor( const unsigned int x, const unsigned int y )
     }
 }
 
+bool Level::isWall( sf::Vector2i p ) const
+{
+    return isWall(p.x, p.y);
+}
+
 bool Level::isWall( int x, int y ) const
 {
     if(!isBounded(x, y)) { return true; }
@@ -188,7 +193,7 @@ void Level::update( void )
 
             if( !isWall(i, j) ) // Si c'est un sol
             {
-                if( isWall(i-1, j) || isWall(i, j-1) || isWall(i-1, j-1) ) { // Si la case du dessus ou à gauche est un mur
+                if( isWall(i, j-1) ) {
                     v = m_tileset->getTile(FLOOR_SHADOW);
                 } else {
                     v = m_tileset->getTile(FLOOR_DEFAULT);
@@ -196,79 +201,43 @@ void Level::update( void )
             }
             else // Si c'est un mur
             {
-                if( !isWall(i, j+1) ) { // Si la case du dessous est un sol
-                    if(!isWall(i-1, j)) { // Si la case à gauche est aussi un sol
-                        v = m_tileset->getTile(WALL_L);
-                    } else if(!isWall(i+1, j)) { // Si la case à droite est aussi un sol
-                        v = m_tileset->getTile(WALL_R);
-                    } else {
-                        v = m_tileset->getTile(WALL_T);
-                    }
+                if( !isWall(i+1, j) ) {
+                    roofs.push_back( m_tileset->getTile(WALL_L) );
                 }
-                // Sinon c'est un mur entoure de rien, donc aucun tile
-            }
-
-/// ------------------------------------------------------------
-
-            if( !isWall(i, j) ) // Si c'est un sol
-            {
-                if( isWall(i, j+1) ) {
-                    roofs.push_back( m_tileset->getTile(ROOF_D) );
-                    if( !isWall(i-1, j) && !isWall(i-1, j+1) ) {
-                        roofs.push_back( m_tileset->getTile(ROOF_TL) );
-                    }
-                    if( !isWall(i+1, j) && !isWall(i+1, j+1)) {
-                        roofs.push_back( m_tileset->getTile(ROOF_TR) );
-                    }
+                if( !isWall(i-1, j) ) {
+                    roofs.push_back( m_tileset->getTile(WALL_R) );
+                }
+                if( !isWall(i, j+1) ) {
+                    roofs.push_back( m_tileset->getTile(WALL_U) );
+                }
+                if( !isWall(i, j-1) ) {
+                    roofs.push_back( m_tileset->getTile(WALL_D) );
                 }
 
-                if( isWall(i, j+1) && isWall(i+1, j) && !isWall(i+1, j+1) ) {
-                    roofs.push_back( m_tileset->getTile(ROOF_TR) );
+                if( !isWall(i+1, j+1) && isWall(i+1, j) && isWall(i, j+1) ) {
+                    roofs.push_back( m_tileset->getTile(WALL_UL1) );
                 }
-                if( isWall(i, j+1) && isWall(i-1, j) && !isWall(i-1, j+1) ) {
-                    roofs.push_back( m_tileset->getTile(ROOF_TL) );
+                if( !isWall(i-1, j+1) && isWall(i-1, j) && isWall(i, j+1) ) {
+                    roofs.push_back( m_tileset->getTile(WALL_UR1) );
                 }
-
-            }
-
-/// ------------------------------------------------------------
-
-            if( isWall(i, j) ) {
-                if(!isWall(i+1, j) && (isWall(i+1, j+1)) && isWall(i, j+1)) {
-                    roofs.push_back( m_tileset->getTile(ROOF_DR) );
-                } else if((!isWall(i+1, j) || !isWall(i+1, j+1)) && (isWall(i, j+1))) { // Si la case à droite est un sol
-                    roofs.push_back( m_tileset->getTile(ROOF_TR) );
-                    roofs.push_back( m_tileset->getTile(ROOF_DR) );
-                    roofs.push_back( m_tileset->getTile(ROOF_UR) );
+                if( !isWall(i+1, j-1) && isWall(i+1, j) && isWall(i, j-1) ) {
+                    roofs.push_back( m_tileset->getTile(WALL_DL1) );
+                }
+                if( !isWall(i-1, j-1) && isWall(i-1, j) && isWall(i, j-1) ) {
+                    roofs.push_back( m_tileset->getTile(WALL_DR1) );
                 }
 
-                if(!isWall(i-1, j) && (isWall(i-1, j+1)) && isWall(i, j+1)) {
-                    roofs.push_back( m_tileset->getTile(ROOF_DL) );
-                } else if((!isWall(i-1, j) || !isWall(i-1, j+1)) && (isWall(i, j+1))) { // Si la case à droite est un sol
-                    roofs.push_back( m_tileset->getTile(ROOF_TL) );
-                    roofs.push_back( m_tileset->getTile(ROOF_DL) );
-                    roofs.push_back( m_tileset->getTile(ROOF_UL) );
+                if( !isWall(i+1, j) && !isWall(i, j+1) ) {
+                    roofs.push_back( m_tileset->getTile(WALL_UL2) );
                 }
-            }
-
-/// ------------------------------------------------------------
-
-            if( (!isWall(i+1, j+1) || !isWall(i+1, j+2)) && isWall(i, j+1) ) {
-                roofs.push_back( m_tileset->getTile(ROOF_UR) );
-            }
-            if( (!isWall(i-1, j+1) || !isWall(i-1, j+2)) && isWall(i, j+1) ) {
-                roofs.push_back( m_tileset->getTile(ROOF_UL) );
-            }
-
-/// ------------------------------------------------------------
-
-            if(!isWall(i, j+2) && isWall(i, j+1)) { // Si 2 case en dessous est un sol
-                roofs.push_back( m_tileset->getTile(ROOF_U) );
-                if(!isWall(i-1, j)) { // Si la case à gauche est aussi un sol
-                    roofs.push_back( m_tileset->getTile(ROOF_UL) );
+                if( !isWall(i-1, j) && !isWall(i, j+1) ) {
+                        roofs.push_back( m_tileset->getTile(WALL_UR2) );
                 }
-                if(!isWall(i+1, j)) { // Si la case à droite est aussi un sol
-                    roofs.push_back( m_tileset->getTile(ROOF_UR) );
+                if( !isWall(i+1, j) && !isWall(i, j-1) ) {
+                    roofs.push_back( m_tileset->getTile(WALL_DL2) );
+                }
+                if( !isWall(i-1, j) && !isWall(i, j-1) ) {
+                    roofs.push_back( m_tileset->getTile(WALL_DR2) );
                 }
             }
 

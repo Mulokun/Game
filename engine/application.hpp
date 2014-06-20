@@ -8,12 +8,12 @@
 #include "state_manager.hpp"
 
 
-class Game
+class Application
 {
 
     public :
-        Game( void );
-        ~Game( void );
+        Application( void );
+        ~Application( void );
 
         void init( void );
         void addState( State * s );
