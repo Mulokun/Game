@@ -108,7 +108,7 @@ sf::Sprite * Animation::update( void )
 
     if(m_play)
     {
-        m_lastTime += Time::deltaTime();
+        m_lastTime += Time::frameTime();
         while(m_lastTime > m_framesTime[m_numFrame])
         {
             m_lastTime -= m_framesTime[m_numFrame];

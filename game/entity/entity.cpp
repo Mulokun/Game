@@ -10,6 +10,8 @@ Entity::Entity( void )
 {
     m_position = sf::Vector2i( 0, 0 );
     m_mobility = 5;
+    m_timeElapsed = 0;
+    m_ready = false;
 }
 
 Entity::~Entity( void ) {}
@@ -60,15 +62,35 @@ void Entity::setTimeElapsed( unsigned int time )
         if(m_AP < Entity::MaxAP) {
             m_AP++;
         }
+        m_ready = true;
     }
 }
 
-unsigned int Entity::getTimeRemaining( void ) const
+unsigned int Entity::getTimeRemain( void ) const
 {
     return Entity::WaitingTime - m_timeElapsed;
+}
+
+bool Entity::isReady( void ) const
+{
+    return m_ready;
+}
+
+void Entity::endTurn( void )
+{
+    m_ready = false;
 }
 
 unsigned int Entity::getAP( void ) const
 {
     return m_AP;
+}
+
+bool Entity::useAP( unsigned int nb )
+{
+    if(m_AP >= nb) {
+        m_AP -= nb;
+        return true;
+    }
+    else { return false; }
 }

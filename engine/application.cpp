@@ -2,19 +2,21 @@
 
 #include "state.hpp"
 #include "time.hpp"
+#include "configuration.hpp"
 
 Application::Application( void ) { init(); }
 Application::~Application( void ) {}
 
 void Application::init( void )
 {
+    Configuration::load();
+
     m_render.create(sf::VideoMode(800, 600), "Game", sf::Style::Titlebar | sf::Style::Close);
     m_render.setFramerateLimit(60);
     m_render.setKeyRepeatEnabled(false);
+    m_focused = true;
 
-    m_zoom = 1;
-
-    m_render.setSize( sf::Vector2u( 800 * m_zoom, 600 * m_zoom ) );
+    m_render.setSize( sf::Vector2u( 800 * Configuration::ZOOM, 600 * Configuration::ZOOM ) );
 
     StateManager::kill();
 }
@@ -41,14 +43,18 @@ void Application::start( void )
 
 void Application::update( void )
 {
-    StateManager::update();
+    if(m_focused) {
+        StateManager::update();
+    }
 }
 
 void Application::draw( void )
 {
-    m_render.clear( sf::Color::Black );
-    StateManager::draw( m_render );
-    m_render.display();
+    if(m_focused) {
+        m_render.clear( sf::Color::Black );
+        StateManager::draw( m_render );
+        m_render.display();
+    }
 }
 
 void Application::handleEvent( void )
@@ -62,7 +68,20 @@ void Application::handleEvent( void )
             m_render.close();
         }
 
-        StateManager::handleEvent( event );
+        if (event.type == sf::Event::GainedFocus)
+        {
+            m_focused = true;
+        }
+
+        if (event.type == sf::Event::LostFocus)
+        {
+            m_focused = false;
+        }
+
+        if(m_focused) {
+            StateManager::handleEvent( event );
+        }
     }
+
 
 }

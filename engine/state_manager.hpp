@@ -17,7 +17,7 @@ class StateManager
         static void handleEvent( sf::Event & e );
 
         static void addState( State * s );
-        static void popState( void );
+        static void popState( unsigned int popNb = 1 );
         static State * getCurrent( void );
         static void setCurrent( void );
         static bool isEmpty( void );
@@ -32,7 +32,7 @@ class StateManager
 
         State * m_current;
         std::stack<State*> m_stateManaged;
-        bool m_pop;
+        unsigned int m_pop;
 
 };
 

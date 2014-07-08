@@ -16,6 +16,8 @@ class Time
         static void update( void );
         static sf::Time elapsed( void );
         static float IPS( void );
+        static float currentIPS( void );
+        static float frameTime( void );
         static float deltaTime( void );
         static void setIPS( int ips );
 

@@ -21,7 +21,7 @@ class Application
 
     private :
 
-        int m_zoom;
+        bool m_focused;
         sf::RenderWindow m_render;
 
         /// Private Methods :

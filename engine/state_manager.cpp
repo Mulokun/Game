@@ -80,14 +80,14 @@ void StateManager::addState( State * s )
 }
 
 
-void StateManager::popState( void )
+void StateManager::popState( unsigned int popNb )
 {
     if(StateManager::singleton == NULL)
     {
         StateManager::singleton = new StateManager;
     }
 
-    StateManager::singleton->m_pop = true;
+    StateManager::singleton->m_pop = popNb;
 }
 
 void StateManager::deleteState( void )
@@ -97,19 +97,24 @@ void StateManager::deleteState( void )
         StateManager::singleton = new StateManager;
     }
 
-    if( StateManager::singleton->m_pop )
+    while( StateManager::singleton->m_pop > 0 )
     {
-        StateManager::singleton->m_pop = false;
+        StateManager::singleton->m_pop--;
 
-        State * s = getCurrent();
+        State * s = StateManager::getCurrent();
         if(s)
         {
             delete s;
             s = NULL;
             StateManager::singleton->m_stateManaged.pop();
+            if (!StateManager::singleton->m_stateManaged.empty())
+            {
+                StateManager::singleton->m_current = StateManager::singleton->m_stateManaged.top();
+            }
         }
     }
 }
+
 
 State * StateManager::getCurrent( void )
 {

@@ -243,8 +243,6 @@ std::vector< sf::Vector2i > pathfinding( Level * level, sf::Vector2i from, sf::V
     openList.push_front(current);
 
     while( !openList.empty() && current->pos != to ) {
-        /// TODO : Ajouter : Si chemin direct, créér le node correspondant et break;
-
         removeNode( openList, closeList, current );
         addNeighbor( openList, closeList, current, level, to, from, perception );
 

@@ -50,15 +50,28 @@ float Time::IPS( void )
 {
     if(!Time::m_singleton) { Time::m_singleton = new Time(); }
 
+    return Time::s_IPS;
+}
+
+float Time::currentIPS( void )
+{
+    if(!Time::m_singleton) { Time::m_singleton = new Time(); }
+
     return Time::m_singleton->m_lastFrame.asSeconds() * s_IPS;
 }
 
-float Time::deltaTime( void )
+float Time::frameTime( void )
 {
     if(!Time::m_singleton) { Time::m_singleton = new Time(); }
 
     return Time::m_singleton->m_lastFrame.asMilliseconds();
 }
+
+float Time::deltaTime( void )
+{
+    return (Time::frameTime() / (1000 / Time::IPS()));
+}
+
 
 void Time::setIPS( int ips )
 {

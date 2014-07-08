@@ -10,11 +10,11 @@ class Animation;
 
 
 typedef enum {
-    STAY,
-    UP,
-    DOWN,
-    LEFT,
-    RIGHT
+    ANI_STAY,
+    ANI_UP,
+    ANI_DOWN,
+    ANI_LEFT,
+    ANI_RIGHT
 } AnimationType;
 
 
@@ -35,8 +35,11 @@ class Entity
         unsigned int getMobility( void ) const;
 
         void setTimeElapsed( unsigned int time );
-        unsigned int getTimeRemaining( void ) const;
+        unsigned int getTimeRemain( void ) const;
+        bool isReady( void ) const;
+        void endTurn( void );
         unsigned int getAP( void ) const;
+        bool useAP( unsigned int nb );
 
     private :
         std::map< AnimationType, Animation * > m_animationSet;
@@ -48,6 +51,17 @@ class Entity
         static const unsigned int WaitingTime = 100;
         unsigned int m_AP;
         unsigned int m_timeElapsed;
+        bool m_ready;
+
+        // stat
+        /** [ -- ; - ; = ; + ; ++ ; * ]
+            taille
+            poids
+            muscle
+            technique
+            esprit
+
+        **/
 };
 
 #endif // _ENTITY_

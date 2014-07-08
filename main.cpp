@@ -7,12 +7,38 @@
 **/
 
 #include "engine/application.hpp"
-#include "states/test_state.hpp"
+#include "states/game_select_entity_state.hpp"
 
 int main(int argc, char ** argv)
 {
+    // --------------------------
+
+    GameDatas * gameDatas = new GameDatas;
+
+    gameDatas->level.load("data/level/level_1.lvl");
+
+    Entity * e = new Entity();
+    e->addAnimation(ANI_STAY, "data/animation/thief_stay.ani");
+    e->addAnimation(ANI_UP, "data/animation/thief_up.ani");
+    e->addAnimation(ANI_DOWN, "data/animation/thief_down.ani");
+    e->addAnimation(ANI_LEFT, "data/animation/thief_left.ani");
+    e->addAnimation(ANI_RIGHT, "data/animation/thief_right.ani");
+    e->setPosition(8, 8);
+    e->setTimeElapsed( 5 );
+    gameDatas->entities.push_back(e);
+    e = new Entity();
+    e->addAnimation(ANI_STAY, "data/animation/thief_stay.ani");
+    e->addAnimation(ANI_UP, "data/animation/thief_up.ani");
+    e->addAnimation(ANI_DOWN, "data/animation/thief_down.ani");
+    e->addAnimation(ANI_LEFT, "data/animation/thief_left.ani");
+    e->addAnimation(ANI_RIGHT, "data/animation/thief_right.ani");
+    e->setPosition(4, 8);
+    gameDatas->entities.push_back(e);
+
+    // --------------------------
+
     Application app;
-    app.addState(new TestState());
+    app.addState(new Game_SelectEntityState(gameDatas));
     app.start();
 
     return 0;
@@ -21,7 +47,6 @@ int main(int argc, char ** argv)
 /** TODO LIST :
 
     - save a tester
-    - tester lvl avec un perso
 
     - entity.hpp : change enum -> const unsigned int
 
