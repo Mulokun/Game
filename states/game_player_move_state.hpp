@@ -1,5 +1,5 @@
-#ifndef _GAME_MOVE_STATE_
-#define _GAME_MOVE_STATE_
+#ifndef _GAME_PLAYER_MOVE_STATE_
+#define _GAME_PLAYER_MOVE_STATE_
 
 
 #include <SFML/Audio.hpp>
@@ -28,29 +28,31 @@ const sf::Time CURSOR_TIME_AFTER_PRESS = sf::milliseconds(400);
 const sf::Time CURSOR_TIME_CONTINUOUS = sf::milliseconds(50);
 
 
-class Game_MoveState : public State
+class Game_PlayerMoveState : public State
 {
 
     public :
-        Game_MoveState( GameDatas * gd, Entity * selected );
-        virtual ~Game_MoveState( void );
+        Game_PlayerMoveState( GameDatas * gd, Character * selected );
+        virtual ~Game_PlayerMoveState( void );
 
         virtual void init( void );
         virtual void draw( sf::RenderTarget & window );
         virtual void update( void );
         virtual void handleEvent( sf::Event & e );
+        virtual void treatEvent( GameEvent e );
 
     private :
 
         GameDatas * m_gameDatas;
-        Entity * m_selected;
+        Character * m_selected;
         sf::Vector2i m_oldPosition;
+        bool m_moved;
 
         sf::Vector2i m_cursorPosition;
         sf::Time m_cursorNextAction;
         void setCursorMove( sf::Vector2i cursorCusor );
 
-        void setMobilityArea( Entity * e );
+        void setMobilityArea( Character * e );
         std::vector< sf::Vector2i > m_mobilityArea;
         Animation m_mobilityAreaAnimation;
         void initMobilityArrows( void );

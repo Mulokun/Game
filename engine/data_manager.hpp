@@ -13,6 +13,11 @@ class DataManager
 
         static void kill( void );
 
+        // Font :
+
+        static sf::Font * addFont( const std::string path );
+        static sf::Font * getFont( const std::string path );
+
         // Graphics :
 
         static sf::Texture * getTexture( const std::string path );
@@ -38,6 +43,7 @@ class DataManager
         std::map<std::string, sf::Texture*> m_textures;
         std::map<std::string, sf::Sprite*> m_sprites;
         std::map<std::string, sf::SoundBuffer*> m_sounds;
+        std::map<std::string, sf::Font *> fonts;
 
 };
 

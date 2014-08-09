@@ -1,7 +1,7 @@
 #ifndef _GAME_DATAS_
 #define _GAME_DATAS_
 
-#include "../game/entity/entity.hpp"
+#include "../game/character/character.hpp"
 #include "../game/level/level.hpp"
 
 class GameDatas
@@ -12,9 +12,14 @@ class GameDatas
         GameDatas( void );
         ~GameDatas( void );
 
+        void drawAll( sf::RenderTarget & window );
+        void drawAllEntities( sf::RenderTarget & window );
+        void drawPlayerEntities( sf::RenderTarget & window );
+        void drawEnemyEntities( sf::RenderTarget & window );
 
         Level level;
-        std::vector< Entity * > entities;
+        std::vector< Character * > playerEntities;
+        std::vector< Character * > enemyEntities;
 
 };
 

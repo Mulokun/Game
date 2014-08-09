@@ -1,0 +1,29 @@
+
+
+
+
+
+
+/** TODO LIST :
+
+    [OK] implement widget's methods
+    - add some @animation's methods (addFrame, init, ..)
+    - add santé sur @character
+    - @character : modif' avoid/touch pour pouvoir etre negatif
+
+    - save a tester
+
+    - entity.hpp : change enum -> const unsigned int
+
+    [OK] add GUI
+    - Commenter
+    - Constructor improve (init variable, copie)
+    - Message d'erreur
+
+**/
+
+
+
+
+
+

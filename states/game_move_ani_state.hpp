@@ -15,18 +15,19 @@ class Game_MoveAniState : public State
 {
 
     public :
-        Game_MoveAniState( GameDatas * gd, Entity * m_selected, std::vector< sf::Vector2i > path );
+        Game_MoveAniState( GameDatas * gd, Character * m_selected, std::vector< sf::Vector2i > path );
         virtual ~Game_MoveAniState( void );
 
         virtual void init( void );
         virtual void draw( sf::RenderTarget & window );
         virtual void update( void );
         virtual void handleEvent( sf::Event & e );
+        virtual void treatEvent( GameEvent e );
 
     private :
 
         GameDatas * m_gameDatas;
-        Entity * m_selected;
+        Character * m_selected;
         std::vector< sf::Vector2i > m_path;
 
         unsigned int m_it;

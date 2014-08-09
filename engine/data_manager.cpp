@@ -23,6 +23,48 @@ DataManager::~DataManager( void )
 
 }
 
+// *********************** FONTS ******
+
+sf::Font * DataManager::addFont( const std::string path )
+{
+    if(DataManager::singleton == NULL)
+    {
+        DataManager::singleton = new DataManager;
+    }
+
+    sf::Font * f = new sf::Font;
+    if( f->loadFromFile( path ) )
+    {
+        DataManager::singleton->fonts[path] = f;
+        return f;
+    }
+    else
+    {
+        return NULL;
+    }
+}
+
+sf::Font * DataManager::getFont( const std::string path )
+{
+    if(DataManager::singleton == NULL)
+    {
+        DataManager::singleton = new DataManager;
+    }
+
+    sf::Font * f = NULL;
+    std::map< std::string, sf::Font * >::iterator i = DataManager::singleton->fonts.find( path );
+    if( i == DataManager::singleton->fonts.end() )
+    {
+        f = addFont( path );
+    }
+    else
+    {
+        f = (*i).second;
+    }
+
+    return f;
+}
+
 sf::Texture * DataManager::addTexture( const std::string path )
 {
     if(DataManager::singleton == NULL)

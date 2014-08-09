@@ -1,6 +1,6 @@
 #include "game_select_entity_state.hpp"
 
-#include "game_move_state.hpp"
+#include "game_player_move_state.hpp"
 #include "../engine/animation.hpp"
 #include "../engine/state_manager.hpp"
 #include "../engine/foo.hpp"
@@ -22,31 +22,21 @@ void Game_SelectEntityState::init( void )
 
 void Game_SelectEntityState::draw( sf::RenderTarget & window )
 {
-    m_gameDatas->level.draw( window );
-    m_gameDatas->level.drawRoof( window );
-
-    for(unsigned int i = 0; i < m_gameDatas->entities.size(); ++i) {
-        Animation * a = m_gameDatas->entities[i]->getAnimation(ANI_STAY);
-        if(a) {
-            sf::Sprite * s = a->update();
-            if(s) {
-                s->setPosition( m_gameDatas->entities[i]->getPosition().x * Tileset::SizeTile,  m_gameDatas->entities[i]->getPosition().y * Tileset::SizeTile );
-                window.draw(*s);
-            }
-        }
-    }
+    m_gameDatas->drawAll( window );
 }
 
 void Game_SelectEntityState::update( void )
 {
     if(isEntityReady()) {
         selectNextEntity();
-        StateManager::addState( new Game_MoveState(m_gameDatas, m_next) );
+        StateManager::addState( new Game_PlayerMoveState(m_gameDatas, m_next) );
     } else {
-        for(unsigned int i = 0; i < m_gameDatas->entities.size(); i++) {
-            m_gameDatas->entities[i]->setTimeElapsed(1);
+        for(unsigned int i = 0; i < m_gameDatas->playerEntities.size(); i++) {
+            m_gameDatas->playerEntities[i]->setTimeElapsed(1);
         }
-        debug( m_gameDatas->entities[0]->getTimeRemain() );
+        for(unsigned int i = 0; i < m_gameDatas->enemyEntities.size(); i++) {
+            m_gameDatas->enemyEntities[i]->setTimeElapsed(1);
+        }
     }
 }
 
@@ -55,25 +45,38 @@ void Game_SelectEntityState::handleEvent( sf::Event & e )
 
 }
 
+void Game_SelectEntityState::treatEvent( GameEvent e )
+{
+
+}
+
 void Game_SelectEntityState::selectNextEntity( void )
 {
     m_next = NULL;
     /// TODO : S'il y a plusieurs candidats pour etre next
-    for(unsigned int i = 0; i < m_gameDatas->entities.size(); i++) {
-        if( m_gameDatas->entities[i]->isReady() ) {
-            m_next = m_gameDatas->entities[i];
+    for(unsigned int i = 0; i < m_gameDatas->playerEntities.size(); i++) {
+        if( m_gameDatas->playerEntities[i]->isReady() ) {
+            m_next = m_gameDatas->playerEntities[i];
+        }
+    }
+
+    for(unsigned int i = 0; i < m_gameDatas->enemyEntities.size(); i++) {
+        if( m_gameDatas->enemyEntities[i]->isReady() ) {
+            m_next = m_gameDatas->enemyEntities[i];
         }
     }
 }
 
 bool Game_SelectEntityState::isEntityReady( void )
 {
-    if(m_gameDatas->entities[0]->getTimeRemain() == 1) {
-        debug(1);
+    for(unsigned int i = 0; i < m_gameDatas->playerEntities.size(); i++) {
+        if( m_gameDatas->playerEntities[i]->isReady() ) {
+            return true;
+        }
     }
 
-    for(unsigned int i = 0; i < m_gameDatas->entities.size(); i++) {
-        if( m_gameDatas->entities[i]->isReady() ) {
+    for(unsigned int i = 0; i < m_gameDatas->enemyEntities.size(); i++) {
+        if( m_gameDatas->enemyEntities[i]->isReady() ) {
             return true;
         }
     }

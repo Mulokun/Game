@@ -32,9 +32,9 @@ void Application::start( void )
     {
         StateManager::setCurrent();
 
-        handleEvent();
         update();
         draw();
+        handleEvent();
 
         Time::update();
     }
@@ -82,6 +82,4 @@ void Application::handleEvent( void )
             StateManager::handleEvent( event );
         }
     }
-
-
 }

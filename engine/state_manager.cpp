@@ -66,6 +66,7 @@ void StateManager::handleEvent( sf::Event & e )
 
     if(StateManager::singleton->m_current) {
         StateManager::singleton->m_current->handleEvent( e );
+        StateManager::singleton->m_current->processEvent();
     }
 }
 

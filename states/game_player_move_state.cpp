@@ -1,4 +1,4 @@
-#include "game_move_state.hpp"
+#include "game_player_move_state.hpp"
 
 #include "SFML/Audio.hpp"
 
@@ -13,15 +13,16 @@
 #include "game_move_ani_state.hpp"
 
 
-Game_MoveState::Game_MoveState( GameDatas * gd, Entity * selected ) : m_gameDatas(gd), m_selected(selected)
+Game_PlayerMoveState::Game_PlayerMoveState( GameDatas * gd, Character * selected ) : m_gameDatas(gd), m_selected(selected)
 {
     init();
 }
 
-Game_MoveState::~Game_MoveState( void ) { }
+Game_PlayerMoveState::~Game_PlayerMoveState( void ) { }
 
-void Game_MoveState::init( void )
+void Game_PlayerMoveState::init( void )
 {
+    m_moved = false;
     m_oldPosition = m_selected->getPosition();
     m_cursorPosition = m_oldPosition;
 
@@ -32,10 +33,9 @@ void Game_MoveState::init( void )
     setMobilityArea(m_selected);
 }
 
-void Game_MoveState::draw( sf::RenderTarget & window )
+void Game_PlayerMoveState::draw( sf::RenderTarget & window )
 {
     m_gameDatas->level.draw( window );
-    m_gameDatas->level.drawRoof( window );
 
     sf::Sprite * area = m_mobilityAreaAnimation.update();
     for(std::vector< sf::Vector2i >::iterator it = m_mobilityArea.begin(); it != m_mobilityArea.end(); ++it) {
@@ -43,16 +43,10 @@ void Game_MoveState::draw( sf::RenderTarget & window )
         window.draw(*area);
     }
 
-    for(unsigned int i = 0; i < m_gameDatas->entities.size(); ++i) {
-        Animation * a = m_gameDatas->entities[i]->getAnimation(ANI_STAY);
-        if(a) {
-            sf::Sprite * s = a->update();
-            if(s) {
-                s->setPosition( m_gameDatas->entities[i]->getPosition().x * Tileset::SizeTile,  m_gameDatas->entities[i]->getPosition().y * Tileset::SizeTile );
-                window.draw(*s);
-            }
-        }
-    }
+    m_gameDatas->drawAllEntities( window );
+    m_gameDatas->level.drawRoof( window );
+
+    /// Draw arrows :
 
     for(unsigned int i = 1; i < m_mobilityPath.size(); ++i) {
         sf::Sprite * s = NULL;
@@ -90,6 +84,7 @@ void Game_MoveState::draw( sf::RenderTarget & window )
         }
     }
 
+    /// Cursor
 
     sf::RectangleShape r;
     r.setSize( sf::Vector2f(30, 30) );
@@ -98,16 +93,13 @@ void Game_MoveState::draw( sf::RenderTarget & window )
     r.setOutlineColor(sf::Color::Green);
     r.setPosition(m_cursorPosition.x * Tileset::SizeTile, m_cursorPosition.y * Tileset::SizeTile);
     window.draw(r);
-
-
 }
 
-void Game_MoveState::update( void )
+void Game_PlayerMoveState::update( void )
 {
-    /// TODO : supprimer, ici c'est juste pour un test
-    /// Plus tard, ce sera init() qui sera appele
-    if(m_selected->getPosition() != m_oldPosition) {
-        setMobilityArea(m_selected);
+    if(m_moved) {
+        m_selected->setPosition(m_oldPosition);
+        init();
     }
 
     if( m_cursorNextAction <= Time::elapsed() ) {
@@ -130,7 +122,7 @@ void Game_MoveState::update( void )
     }
 }
 
-void Game_MoveState::handleEvent( sf::Event & e )
+void Game_PlayerMoveState::handleEvent( sf::Event & e )
 {
     if( e.type == sf::Event::KeyReleased )
     {
@@ -166,9 +158,8 @@ void Game_MoveState::handleEvent( sf::Event & e )
 
         if(e.key.code == Configuration::KEY_A) {
             if(!m_gameDatas->level.isWall(m_cursorPosition) && distanceManhattan(m_selected->getPosition(), m_cursorPosition) <= m_selected->getMobility()) {
-                m_selected->useAP(1);
-                m_selected->endTurn();
-                /// TODO : endTurn ne devra plus etre la (c'est que pour des testes)
+                m_selected->useAP(1); //! *** Regain d'AP quand on annule le deplacement
+                m_moved = true;
                 StateManager::addState(new Game_MoveAniState(m_gameDatas, m_selected, m_mobilityPath));
             }
         }
@@ -176,9 +167,14 @@ void Game_MoveState::handleEvent( sf::Event & e )
 }
 
 
+void Game_PlayerMoveState::treatEvent( GameEvent e )
+{
+
+}
 
 
-void Game_MoveState::setMobilityArea( Entity * e )
+
+void Game_PlayerMoveState::setMobilityArea( Character * e )
 {
     m_mobilityArea.clear();
 
@@ -195,7 +191,7 @@ void Game_MoveState::setMobilityArea( Entity * e )
 }
 
 
-void Game_MoveState::initMobilityArrows( void )
+void Game_PlayerMoveState::initMobilityArrows( void )
 {
     m_mobilityArrows[ARROW_HORIZONTAL] = DataManager::getSprite("data/other/mobility_arrows.png", sf::FloatRect(32*0, 0, 32, 32));
     m_mobilityArrows[ARROW_VERTICAL] = DataManager::getSprite("data/other/mobility_arrows.png", sf::FloatRect(32*1, 0, 32, 32));
@@ -209,7 +205,7 @@ void Game_MoveState::initMobilityArrows( void )
     m_mobilityArrows[ARROW_END_RIGHT] = DataManager::getSprite("data/other/mobility_arrows.png", sf::FloatRect(32*9, 0, 32, 32));
 }
 
-void Game_MoveState::setCursorMove( sf::Vector2i cursorMove )
+void Game_PlayerMoveState::setCursorMove( sf::Vector2i cursorMove )
 {
     if( (cursorMove.x != 0 || cursorMove.y != 0) )
     {

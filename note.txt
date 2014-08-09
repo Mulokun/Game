@@ -1,0 +1,103 @@
+
+
+
+
+
+
+/** NOTE :
+
+    -- Character :
+
+    * @Taille : @HPMax, @damage
+    * @Poids : @HPMax, @damage, @resistance
+    * @Musculature : @damage, @HPMax, @resistance
+    * @Technique : @esquive, @chanceTouche
+    * @Esprit : @esquive, @chanceTouche
+    ? @Sante : @PA gagné par tour, @resistance ( de base =, peut etre - ou + ) (jusqu'a -- ou ++)
+    ? @courage : 30 au debut. Puis +/- en fonction de certain evenement (Mort/combat/victoire/...) de 10 en 10 (--, -, =, +, ++, *, **, ***, ****, *****)
+
+    * @HPMax : Entre 8 et 52 (moy : 18)
+    * @esquive : entre 0 et 11 % [MODIF] voulu : ~~ entre -10 et 10
+    * @touch :  [MODIF] voulu : ~~ entre -10 et 10
+    * @damage : Degat ajouter a l'arme de base. 0 à 11 (moy : 4) modif : -3 / +5
+    * @resistance : [TODO] voulu : ~~ entre 0 et 10
+
+    -- GDD :
+
+    * la stat @sante peut etre modifié au cours de l'aventure via un repas/potion
+    * certain potion peuvent modifier des stats (potion de gigantisme, ...)
+    * Chaque perso à des @pointDAction
+    * Les @skills coutent des @pointDAction et on en gagne X par tour.
+    * Un tour dure Y temps pour tout le monde
+    * Un ordre est defini a l'entré un dj en fonction du @courage
+    * On affiche que l'ordre des perso visible ally et enemy
+    * Les armes tape qu'une seul cible
+    * Tout les action consommera des @pointDAction cumulable avec une limite max
+    * Un deplacement coute le meme nombre de @pointDAction meme si c'est d'1 ou X case (et le meme nombre pour tout le monde (ou pas))
+    * On gagne Z @pointDAction a chaque debut de tour
+
+    -- TDD :
+
+    * Les @skill seront init via les script lua, une seul class, avec des methods qui feront leurs actions via les scripts
+    * Les @treeSkill seront init par des fichier
+    *
+
+**/
+
+
+
+
+
+
+//////////////////////////////////////
+/**
+*/
+
+/// ------------------------
+
+/// Normalement :
+
+    lua_State * state;
+
+/// En premier
+    // on enregistre la classe auprès de lua
+    Lunar<Gatherer>::Register(state);
+
+    // on vérifie si le script existe bien || on ajoute le script pour que Lua sache qu'il existe
+    if(luaL_dofile(Estate, "lua/gatherer.lua") != 0)
+    {
+        // il y a eu une erreur dans le script
+        fprintf(stderr, "%s\n", lua_tostring(state, -1));
+        exit(0);
+    }
+
+/// -----
+
+    // On dit quel fonction appeler
+    lua_getglobal(state,"laMethod");
+    // on vérifie si la fonction existe bien
+    if (!lua_isfunction(state,-1))
+    {
+        // la fonction n'existe pas
+        fprintf(stderr,"la fonction luaPrint n'existe pas\n");
+        lua_pop(state,1);
+    }
+    else
+    {
+        // la fonction existe, on lui passe des arguments
+        lua_pushstring(state,"le message passé en paramètre"); // Basique
+        Vector3 v2;
+        Lunar<Vector3>::push(state,&v2); // Objet
+        // on appel la fonction qui a 2 argument et 1 retour
+        lua_call(state,2,1);
+
+        // un retour ?
+        int argc = lua_gettop(L);
+        if( argc > 0 && lua_isnumber(L, 1)) {
+            int retour = lua_tonumber(L, 1);
+        }
+
+    }
+/**
+*/
+///////////////////////////////////////////
